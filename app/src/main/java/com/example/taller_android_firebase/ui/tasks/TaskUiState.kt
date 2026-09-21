@@ -1,4 +1,4 @@
-package com.example.taller_android_firebase.presentation.tasks
+package com.example.taller_android_firebase.ui.tasks
 
 import com.example.taller_android_firebase.domain.model.Task
 

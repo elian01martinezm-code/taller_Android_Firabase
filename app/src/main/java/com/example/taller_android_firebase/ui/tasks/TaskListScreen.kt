@@ -1,4 +1,4 @@
-package com.example.taller_android_firebase.presentation.tasks
+package com.example.taller_android_firebase.ui.tasks
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn

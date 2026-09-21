@@ -25,6 +25,7 @@ class TaskRepositoryImpl @Inject constructor(
 
     override fun getTasksRealTime(): Flow<List<Task>> {
         val uid = firebaseAuth.currentUser?.uid
+        println("DEBUG: Consultando tareas para el usuario UID: $uid")
         if (uid == null) {
             return flow { emit(emptyList()) }
         }
@@ -61,7 +62,8 @@ class TaskRepositoryImpl @Inject constructor(
                 id = docRef.id,
                 title = title,
                 description = description,
-                isCompleted = false,
+                taskCompleted = false,
+                legacyCompleted = false,
                 createdAt = System.currentTimeMillis(),
                 ownerId = uid
             )

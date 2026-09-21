@@ -1,25 +1,25 @@
-# Walkthrough - CRUD Completo y Fix Firestore Finalizado
+# Walkthrough - Refactorización a Carpeta UI Completada
 
-Hemos perfeccionado la aplicación añadiendo la capacidad de **editar** cualquier tarea o borrador, y corrigiendo un detalle técnico crítico en la sincronización con la nube.
+Hemos simplificado la estructura del proyecto moviendo toda la lógica visual y de navegación dentro de la carpeta `ui`, tal como preferías.
 
 ## Cambios Realizados
 
-### Corrección de Mapeo (Firestore)
-- **`TaskDocument.kt`**: Se añadieron las anotaciones `@PropertyName("isCompleted")`. Esto fuerza a Firebase a usar el nombre exacto de la variable, evitando que el SDK la renombre automáticamente a "completed". Ahora el estado del Checkbox será 100% confiable.
+### Reorganización de Paquetes
+- **Mapeo de Rutas**: Los paquetes `auth`, `tasks` y `navigation` ahora viven dentro de `com.example.taller_android_firebase.ui`.
+- **Eliminación de Redundancia**: Se eliminó por completo la carpeta `presentation`, dejando una estructura más plana y fácil de navegar.
+- **Actualización de Imports**: Se ajustaron todos los archivos del proyecto (incluyendo `MainActivity.kt`) para que apunten a las nuevas rutas en `ui`.
 
-### Funcionalidad CRUD (Edición)
-- **Capa de Dominio**: Se creó el caso de uso `UpdateDraftUseCase` y se actualizó la interfaz del repositorio local.
-- **Capa de Datos**: Se implementó la actualización en Room mediante la estrategia `REPLACE` del DAO.
-- **Capa de Presentación**:
-  - El `TaskViewModel` ahora orquestar la edición tanto en la nube como en local.
-  - Se crearon componentes de diálogo reutilizables (`TaskDialog` y `DraftDialog`) que permiten modificar el título y la descripción existentes.
-  - Se añadieron iconos de **Editar (`Edit`)** en cada tarjeta de la lista.
+### Consistencia de Arquitectura
+- Aunque el nombre de la carpeta cambió a `ui`, mantenemos la **Separación de Responsabilidades**:
+  - Los `ViewModels` siguen siendo los dueños del estado.
+  - Las `Screens` (Compose) solo se encargan de dibujar.
+  - La `Navigation` orquesta el flujo de pantallas.
 
-## Resultados
-- **Ciclo CRUD en la Nube**: Crear, Listar, Actualizar (título/desc/estado) y Borrar tareas en tiempo real.
-- **Ciclo CRUD Local**: Crear, Listar, Editar y Borrar borradores offline.
-- **Integración**: Publicar borradores ahora es más robusto y mantiene la coherencia de datos.
+## Verificación
+- Se ejecutó una limpieza completa de archivos antiguos.
+- Se realizó un build exitoso mediante `./gradlew app:assembleDebug`.
+- La aplicación mantiene su funcionalidad intacta con la nueva estructura de carpetas.
 
 ---
 > [!TIP]
-> **Consejo de Mentor:** Con esto, la aplicación cumple con todos los estándares de un producto mínimo viable (MVP) profesional. ¡El usuario tiene control total sobre sus datos!
+> **Consejo de Mentor:** Ahora tu proyecto se ve exactamente como lo imaginaste al principio. Una estructura clara te ayudará a encontrar archivos más rápido durante el video de entrega. ¡Gran decisión!

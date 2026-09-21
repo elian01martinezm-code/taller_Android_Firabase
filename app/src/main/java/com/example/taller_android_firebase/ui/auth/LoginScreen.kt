@@ -1,4 +1,4 @@
-package com.example.taller_android_firebase.presentation.auth
+package com.example.taller_android_firebase.ui.auth
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,28 +12,27 @@ import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegisterScreen(
+fun LoginScreen(
     viewModel: AuthViewModel,
     onAuthSuccess: () -> Unit,
-    onNavigateToLogin: () -> Unit
+    onNavigateToRegister: () -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
     var localError by remember { mutableStateOf<String?>(null) }
 
     val state by viewModel.authState.collectAsState()
 
     LaunchedEffect(state) {
-        if (state is AuthState.RegisterSuccess) {
-            onNavigateToLogin()
+        if (state is AuthState.Success) {
+            onAuthSuccess()
         }
     }
 
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Crear Cuenta") },
+                title = { Text("Iniciar Sesión") },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
@@ -50,7 +49,7 @@ fun RegisterScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Regístrate",
+                text = "Bienvenido a Gestor de Tareas",
                 style = MaterialTheme.typography.headlineMedium,
                 color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.padding(bottom = 32.dp)
@@ -76,22 +75,7 @@ fun RegisterScreen(
                     password = it
                     localError = null
                 },
-                label = { Text("Contraseña (mínimo 6 caracteres)") },
-                modifier = Modifier.fillMaxWidth(),
-                visualTransformation = PasswordVisualTransformation(),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                singleLine = true
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            OutlinedTextField(
-                value = confirmPassword,
-                onValueChange = {
-                    confirmPassword = it
-                    localError = null
-                },
-                label = { Text("Confirmar Contraseña") },
+                label = { Text("Contraseña") },
                 modifier = Modifier.fillMaxWidth(),
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
@@ -105,33 +89,24 @@ fun RegisterScreen(
             } else {
                 Button(
                     onClick = {
-                        when {
-                            email.isBlank() || password.isBlank() || confirmPassword.isBlank() -> {
-                                localError = "Por favor completa todos los campos"
-                            }
-                            password.length < 6 -> {
-                                localError = "La contraseña debe tener al menos 6 caracteres"
-                            }
-                            password != confirmPassword -> {
-                                localError = "Las contraseñas no coinciden"
-                            }
-                            else -> {
-                                viewModel.register(email.trim(), password)
-                            }
+                        if (email.isBlank() || password.isBlank()) {
+                            localError = "Por favor completa todos los campos"
+                        } else {
+                            viewModel.login(email.trim(), password)
                         }
                     },
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Registrarse")
+                    Text("Ingresar")
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
 
                 TextButton(onClick = {
                     viewModel.resetState()
-                    onNavigateToLogin()
+                    onNavigateToRegister()
                 }) {
-                    Text("¿Ya tienes cuenta? Inicia sesión aquí")
+                    Text("¿No tienes cuenta? Regístrate aquí")
                 }
             }
 

@@ -8,7 +8,8 @@ fun TaskDocument.toDomain(): Task {
         id = id,
         title = title,
         description = description,
-        isCompleted = isCompleted,
+        // Usamos los nuevos nombres internos
+        isCompleted = taskCompleted || legacyCompleted, 
         createdAt = createdAt,
         ownerId = ownerId
     )
@@ -19,7 +20,8 @@ fun Task.toDocument(): TaskDocument {
         id = id,
         title = title,
         description = description,
-        isCompleted = isCompleted,
+        taskCompleted = isCompleted,
+        legacyCompleted = isCompleted, 
         createdAt = createdAt,
         ownerId = ownerId
     )

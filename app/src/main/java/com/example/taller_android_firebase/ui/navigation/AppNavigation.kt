@@ -1,32 +1,32 @@
-package com.example.taller_android_firebase.presentation.navigation
+package com.example.taller_android_firebase.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.taller_android_firebase.presentation.auth.AuthState
-import com.example.taller_android_firebase.presentation.auth.AuthViewModel
-import com.example.taller_android_firebase.presentation.auth.LoginScreen
-import com.example.taller_android_firebase.presentation.auth.RegisterScreen
-import com.example.taller_android_firebase.presentation.tasks.DraftsScreen
-import com.example.taller_android_firebase.presentation.tasks.TaskListScreen
-import com.example.taller_android_firebase.presentation.tasks.TaskViewModel
+import com.example.taller_android_firebase.ui.auth.AuthViewModel
+import com.example.taller_android_firebase.ui.auth.LoginScreen
+import com.example.taller_android_firebase.ui.auth.RegisterScreen
+import com.example.taller_android_firebase.ui.tasks.DraftsScreen
+import com.example.taller_android_firebase.ui.tasks.TaskListScreen
+import com.example.taller_android_firebase.ui.tasks.TaskViewModel
 
 @Composable
-fun AppNavigation(
-    authViewModel: AuthViewModel,
-    taskViewModel: TaskViewModel
-) {
+fun AppNavigation() {
     val navController = rememberNavController()
-    val authState by authViewModel.authState.collectAsState()
+    val authViewModel: AuthViewModel = hiltViewModel()
 
-    // Determinamos el destino inicial basado en si hay sesión
-    val startDestination = if (authState is AuthState.Success) {
-        Screen.TaskList.route
-    } else {
-        Screen.Login.route
+    // Determinamos el destino inicial basado en si hay sesión activa
+    val startDestination = remember {
+        if (authViewModel.isUserLoggedIn()) {
+            Screen.TaskList.route
+        } else {
+            Screen.Login.route
+        }
     }
 
     NavHost(
@@ -51,9 +51,7 @@ fun AppNavigation(
             RegisterScreen(
                 viewModel = authViewModel,
                 onAuthSuccess = {
-                    navController.navigate(Screen.TaskList.route) {
-                        popUpTo(Screen.Login.route) { inclusive = true }
-                    }
+                    // No se usa tras el cambio a registro manual, pero se mantiene por firma
                 },
                 onNavigateToLogin = {
                     navController.popBackStack()
@@ -62,6 +60,8 @@ fun AppNavigation(
         }
 
         composable(Screen.TaskList.route) {
+            // Obtenemos un TaskViewModel fresco para esta pantalla cada vez que entramos
+            val taskViewModel: TaskViewModel = hiltViewModel()
             TaskListScreen(
                 viewModel = taskViewModel,
                 onLogoutClick = {
@@ -77,6 +77,8 @@ fun AppNavigation(
         }
 
         composable(Screen.Drafts.route) {
+            // Obtenemos el TaskViewModel
+            val taskViewModel: TaskViewModel = hiltViewModel()
             DraftsScreen(
                 viewModel = taskViewModel,
                 onBackClick = {

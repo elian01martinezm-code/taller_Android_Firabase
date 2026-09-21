@@ -9,9 +9,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.example.taller_android_firebase" />
-                  <option name="mobileSdkAppId" value="1:1234567890:android:abcdef1234567890" />
-                  <option name="projectId" value="placeholder-project-id" />
-                  <option name="projectNumber" value="1234567890" />
+                  <option name="mobileSdkAppId" value="1:943150555101:android:064a025802edd9c3bfa034" />
+                  <option name="projectId" value="taller-android-firebase" />
+                  <option name="projectNumber" value="943150555101" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

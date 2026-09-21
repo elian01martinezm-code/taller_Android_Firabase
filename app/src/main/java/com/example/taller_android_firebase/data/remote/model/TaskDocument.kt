@@ -9,7 +9,11 @@ data class TaskDocument(
     
     @get:PropertyName("isCompleted")
     @set:PropertyName("isCompleted")
-    var isCompleted: Boolean = false,
+    var taskCompleted: Boolean = false, // Renombrado internamente
+
+    @get:PropertyName("completed")
+    @set:PropertyName("completed")
+    var legacyCompleted: Boolean = false, // Renombrado internamente
     
     var createdAt: Long = 0L,
     var ownerId: String = ""

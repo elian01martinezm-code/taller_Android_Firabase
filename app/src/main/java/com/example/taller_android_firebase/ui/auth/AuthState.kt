@@ -1,4 +1,4 @@
-package com.example.taller_android_firebase.presentation.auth
+package com.example.taller_android_firebase.ui.auth
 
 import com.example.taller_android_firebase.domain.model.UserSession
 

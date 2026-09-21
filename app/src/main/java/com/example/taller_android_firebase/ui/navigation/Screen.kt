@@ -1,4 +1,4 @@
-package com.example.taller_android_firebase.presentation.navigation
+package com.example.taller_android_firebase.ui.navigation
 
 sealed class Screen(val route: String) {
     object Login : Screen("login")

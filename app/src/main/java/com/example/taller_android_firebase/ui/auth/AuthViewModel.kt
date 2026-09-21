@@ -1,4 +1,4 @@
-package com.example.taller_android_firebase.presentation.auth
+package com.example.taller_android_firebase.ui.auth
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -26,6 +26,10 @@ class AuthViewModel @Inject constructor(
 
     init {
         checkCurrentUser()
+    }
+
+    fun isUserLoggedIn(): Boolean {
+        return getCurrentUserUseCase() != null
     }
 
     fun checkCurrentUser() {
