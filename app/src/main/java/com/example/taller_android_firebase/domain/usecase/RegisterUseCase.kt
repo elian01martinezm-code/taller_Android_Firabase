@@ -1,0 +1,19 @@
+package com.example.taller_android_firebase.domain.usecase
+
+import com.example.taller_android_firebase.domain.model.UserSession
+import com.example.taller_android_firebase.domain.repository.AuthRepository
+import javax.inject.Inject
+
+class RegisterUseCase @Inject constructor(
+    private val authRepository: AuthRepository
+) {
+    suspend operator fun invoke(email: String, password: String): Result<UserSession> {
+        if (email.isBlank() || password.isBlank()) {
+            return Result.failure(IllegalArgumentException("El correo y la contraseña no pueden estar vacíos"))
+        }
+        if (password.length < 6) {
+            return Result.failure(IllegalArgumentException("La contraseña debe tener al menos 6 caracteres"))
+        }
+        return authRepository.register(email, password)
+    }
+}
